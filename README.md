@@ -1,4 +1,5 @@
 # vue-calculator
+basic calculator app to get some practive building in Vue
 
 ## Project setup
 ```
