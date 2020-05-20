@@ -1,0 +1,132 @@
+<template>
+  <div id="calculator">
+    <div class="display">{{ cur || 0 }}</div>
+    <div class="keyPad">
+      <button @click="allClear" class="clear">AC</button>
+      <button @click="sign" class="sign">+/-</button>
+      <button @click="percent" class="percent">%</button> 
+      <button @click="divide" class="operator">/</button>
+      <button @click="appendVal('7')" class="number">7</button>
+      <button @click="appendVal('8')" class="number">8</button>
+      <button @click="appendVal('9')" class="number">9</button>
+      <button @click="multiply" class="operator">x</button>
+      <button @click="appendVal('4')" class="number">4</button>
+      <button @click="appendVal('5')" class="number">5</button>
+      <button @click="appendVal('6')" class="number">6</button>
+      <button @click="subtract" class="operator">-</button>
+      <button @click="appendVal('1')" class="number">1</button>
+      <button @click="appendVal('2')" class="number">2</button>
+      <button @click="appendVal('3')" class="number">3</button>
+      <button @click="add" class="operator">+</button>
+      <button @click="decimal" class="decimal">.</button>
+      <button @click="appendVal('0')" class="number">0</button>
+      <button class="equals">=</button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Calculator',
+  data() {
+    return {
+      cur: '',
+      prev: null,
+      operator: null
+    }
+  },
+  methods: {
+    allClear() {
+      this.cur = '';
+    },
+    appendVal(num) {
+      this.cur = this.cur.concat(num)
+    },
+    sign() {
+      if(this.cur) {
+        this.cur = this.cur.charAt(0) === '-' ?
+          this.cur.slice(1) : `-${this.cur}`
+      }
+    },
+    percent() {
+      if(this.cur) {
+        this.cur = `${parseFloat(this.cur)/100}`
+      }
+    },
+    decimal() {
+      if(this.cur.indexOf('.') === -1) {
+        this.appendVal('.')
+      }
+    },
+    divide() {
+
+    },
+    multiply() {
+
+    },
+    subtract() {
+
+    },
+    add() {
+
+    }
+  }
+}
+</script>
+
+
+<style scoped>
+
+  #calculator {
+    max-width: 400px;
+    margin: auto;
+    border: solid white 1px;
+  }
+
+  .display {
+    height: 75px;
+    padding: 10px 10px 0 0;
+    border: solid white 1px;
+    background-color: rgb(40, 40, 40);
+    color: white;
+    font-size: 48px;
+    text-align: right;
+  }
+
+  .keyPad {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  button {
+    flex: 1 0 25%; /* explanation below */
+    height: 80px;
+    color: white;
+    font-size: 36px;
+  }
+
+  .number {
+    background-color: rgb(0, 106, 133);
+  }
+
+  .operator {
+    background-color: rgb(187, 123, 5);
+  }
+
+  .equals {
+    flex: 1 0 50%;
+    background-color: rgb(56, 128, 8);
+  }
+
+  .decimal {
+    background-color: rgb(82, 23, 94);
+  }
+
+  .sign, .percent {
+    background-color: rgb(100, 85, 57);
+  }
+
+  .clear {
+    background-color: rgb(134, 0, 22);
+  }
+</style>
