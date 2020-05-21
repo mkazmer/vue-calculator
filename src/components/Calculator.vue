@@ -33,7 +33,11 @@ export default {
       cur: '',
       prev: '',
       toggleCur: false,
-      operator: null
+      operator: null,
+      divideActive: false,
+      multiplyActive: false,
+      subtractActive: false,
+      addActive: false
     }
   },
   methods: {
@@ -42,6 +46,10 @@ export default {
       this.prev = ''
       this.toggleCur = false
       this.operator = null
+      this.divideActive = false
+      this.multiplyActive = false
+      this.subtractActive = false
+      this.addActive = false
     },
     appendVal(num) {
       if(!this.toggleCur) {
@@ -75,6 +83,7 @@ export default {
         this.cur = this.prev
       }
       this.toggleCur = true
+      this.divideActive = true
       this.operator = (prev, cur) => prev/cur
     },
     multiply() {
@@ -85,6 +94,7 @@ export default {
         this.cur = this.prev
       }
       this.toggleCur = true
+      this.multiplyActive = true
       this.operator = (prev, cur) => prev*cur
     },
     subtract() {
@@ -95,6 +105,7 @@ export default {
         this.cur = this.prev
       }
       this.toggleCur = true
+      this.subtractActive = true
       this.operator = (prev, cur) => prev-cur
     },
     add() {
@@ -105,6 +116,7 @@ export default {
         this.cur = this.prev
       }
       this.toggleCur = true
+      this.addActive = true
       this.operator = (prev, cur) => prev+cur
     },
     equal() {
@@ -113,6 +125,10 @@ export default {
         this.prev = ''
         this.operator = null
         this.toggleCur = true
+        this.divideActive = false
+        this.multiplyActive = false
+        this.subtractActive = false
+        this.addActive = false
       }
     }
   }
@@ -131,13 +147,14 @@ export default {
 
   .display {
     height: 75px;
-    padding: 10px 5px 0 0;
+    padding: 10px 5px 0 5px;
     border: solid white 1px;
     border-radius: 10px 10px 0 0;
     background-color: rgb(40, 40, 40);
     color: white;
     font-size: 48px;
     text-align: right;
+    overflow: hidden;
   }
 
   .keyPad {
@@ -146,7 +163,7 @@ export default {
   }
 
   button {
-    flex: 1 0 25%; /* explanation below */
+    flex: 1 0 25%;
     height: 80px;
     color: white;
     font-size: 36px;
