@@ -20,7 +20,7 @@
       <button @click="add" class="operator">+</button>
       <button @click="decimal" class="decimal">.</button>
       <button @click="appendVal('0')" class="number">0</button>
-      <button class="equals">=</button>
+      <button @click="equal" class="equals">=</button>
     </div>
   </div>
 </template>
@@ -31,16 +31,25 @@ export default {
   data() {
     return {
       cur: '',
-      prev: null,
+      prev: '',
+      toggleCur: false,
       operator: null
     }
   },
   methods: {
     allClear() {
-      this.cur = '';
+      this.cur = ''
+      this.prev = ''
+      this.toggleCur = false
+      this.operator = null
     },
     appendVal(num) {
-      this.cur = this.cur.concat(num)
+      if(!this.toggleCur) {
+        this.cur = this.cur.concat(num)
+      } else {
+        this.cur = num
+        this.toggleCur = false
+      }
     },
     sign() {
       if(this.cur) {
@@ -59,16 +68,52 @@ export default {
       }
     },
     divide() {
-
+      if(!this.prev) {
+        this.prev = this.cur
+      }else if(!this.toggleCur) {
+        this.prev = `${parseFloat(this.prev)/parseFloat(this.cur)}`
+        this.cur = this.prev
+      }
+      this.toggleCur = true
+      this.operator = (prev, cur) => prev/cur
     },
     multiply() {
-
+      if(!this.prev) {
+        this.prev = this.cur
+      }else if(!this.toggleCur) {
+        this.prev = `${parseFloat(this.prev)*parseFloat(this.cur)}`
+        this.cur = this.prev
+      }
+      this.toggleCur = true
+      this.operator = (prev, cur) => prev*cur
     },
     subtract() {
-
+      if(!this.prev) {
+        this.prev = this.cur
+      }else if(!this.toggleCur) {
+        this.prev = `${this.operator(parseFloat(this.prev),parseFloat(this.cur))}`
+        this.cur = this.prev
+      }
+      this.toggleCur = true
+      this.operator = (prev, cur) => prev-cur
     },
     add() {
-
+      if(!this.prev) {
+        this.prev = this.cur
+      }else if(!this.toggleCur) {
+        this.prev = `${this.operator(parseFloat(this.prev),parseFloat(this.cur))}`
+        this.cur = this.prev
+      }
+      this.toggleCur = true
+      this.operator = (prev, cur) => prev+cur
+    },
+    equal() {
+      if(!this.toggleCur) {
+        this.cur = `${this.operator(parseFloat(this.prev),parseFloat(this.cur))}`
+        this.prev = ''
+        this.operator = null
+        this.toggleCur = true
+      }
     }
   }
 }
@@ -80,13 +125,15 @@ export default {
   #calculator {
     max-width: 400px;
     margin: auto;
-    border: solid white 1px;
+    border: solid white 2px;
+    border-radius: 12px;
   }
 
   .display {
     height: 75px;
-    padding: 10px 10px 0 0;
+    padding: 10px 5px 0 0;
     border: solid white 1px;
+    border-radius: 10px 10px 0 0;
     background-color: rgb(40, 40, 40);
     color: white;
     font-size: 48px;
@@ -116,10 +163,12 @@ export default {
   .equals {
     flex: 1 0 50%;
     background-color: rgb(56, 128, 8);
+    border-radius: 0 0 10px 0;
   }
 
   .decimal {
     background-color: rgb(82, 23, 94);
+    border-radius: 0 0 0 10px;
   }
 
   .sign, .percent {
