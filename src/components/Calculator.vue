@@ -1,23 +1,23 @@
 <template>
   <div id="calculator">
-    <div class="display">{{ cur || 0 }}</div>
+    <div class="display">{{ cur }}</div>
     <div class="keyPad">
       <button @click="allClear" class="clear">AC</button>
       <button @click="sign" class="sign">+/-</button>
       <button @click="percent" class="percent">%</button> 
-      <button @click="divide" class="operator">/</button>
+      <button @click="divide" :class="[operatorActive === 'divide' ? 'lighten' : '', 'operator']">/</button>
       <button @click="appendVal('7')" class="number">7</button>
       <button @click="appendVal('8')" class="number">8</button>
       <button @click="appendVal('9')" class="number">9</button>
-      <button @click="multiply" class="operator">x</button>
+      <button @click="multiply" :class="[operatorActive === 'multiply' ? 'lighten' : '', 'operator']">x</button>
       <button @click="appendVal('4')" class="number">4</button>
       <button @click="appendVal('5')" class="number">5</button>
       <button @click="appendVal('6')" class="number">6</button>
-      <button @click="subtract" class="operator">-</button>
+      <button @click="subtract" :class="[operatorActive === 'subtract' ? 'lighten' : '', 'operator']">-</button>
       <button @click="appendVal('1')" class="number">1</button>
       <button @click="appendVal('2')" class="number">2</button>
       <button @click="appendVal('3')" class="number">3</button>
-      <button @click="add" class="operator">+</button>
+      <button @click="add" :class="[operatorActive === 'add' ? 'lighten' : '', 'operator']">+</button>
       <button @click="decimal" class="decimal">.</button>
       <button @click="appendVal('0')" class="number">0</button>
       <button @click="equal" class="equals">=</button>
@@ -30,26 +30,20 @@ export default {
   name: 'Calculator',
   data() {
     return {
-      cur: '',
+      cur: '0',
       prev: '',
       toggleCur: false,
       operator: null,
-      divideActive: false,
-      multiplyActive: false,
-      subtractActive: false,
-      addActive: false
+      operatorActive: null
     }
   },
   methods: {
     allClear() {
-      this.cur = ''
+      this.cur = '0'
       this.prev = ''
       this.toggleCur = false
       this.operator = null
-      this.divideActive = false
-      this.multiplyActive = false
-      this.subtractActive = false
-      this.addActive = false
+      this.operatorActive = null
     },
     appendVal(num) {
       if(!this.toggleCur) {
@@ -83,7 +77,7 @@ export default {
         this.cur = this.prev
       }
       this.toggleCur = true
-      this.divideActive = true
+      this.operatorActive = 'divide'
       this.operator = (prev, cur) => prev/cur
     },
     multiply() {
@@ -94,7 +88,7 @@ export default {
         this.cur = this.prev
       }
       this.toggleCur = true
-      this.multiplyActive = true
+      this.operatorActive = 'multiply'
       this.operator = (prev, cur) => prev*cur
     },
     subtract() {
@@ -105,7 +99,7 @@ export default {
         this.cur = this.prev
       }
       this.toggleCur = true
-      this.subtractActive = true
+      this.operatorActive = 'subtract'
       this.operator = (prev, cur) => prev-cur
     },
     add() {
@@ -116,20 +110,18 @@ export default {
         this.cur = this.prev
       }
       this.toggleCur = true
-      this.addActive = true
+      this.operatorActive = 'add'
       this.operator = (prev, cur) => prev+cur
     },
     equal() {
       if(!this.toggleCur) {
         this.cur = `${this.operator(parseFloat(this.prev),parseFloat(this.cur))}`
         this.prev = ''
-        this.operator = null
         this.toggleCur = true
-        this.divideActive = false
-        this.multiplyActive = false
-        this.subtractActive = false
-        this.addActive = false
+        this.operator = null
+        this.operatorActive = null
       }
+      console.log(this.operatorActive)
     }
   }
 }
@@ -176,6 +168,10 @@ export default {
   .operator {
     background-color: rgb(187, 123, 5);
   }
+
+  .lighten {
+      background-color: rgb(228, 166, 51);
+    }
 
   .equals {
     flex: 1 0 50%;
