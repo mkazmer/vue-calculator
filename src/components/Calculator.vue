@@ -30,7 +30,7 @@ export default {
   name: 'Calculator',
   data() {
     return {
-      cur: '0',
+      cur: '',
       prev: '',
       toggleCur: false,
       operator: null,
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     allClear() {
-      this.cur = '0'
+      this.cur = ''
       this.prev = ''
       this.toggleCur = false
       this.operator = null
